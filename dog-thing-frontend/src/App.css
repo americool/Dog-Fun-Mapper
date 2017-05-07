@@ -1,0 +1,48 @@
+.App {
+  text-align: center;
+}
+#map {
+  width: 100vw;
+  height: 76vh;
+}
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+.Icon {
+  height: 2vh;
+  width: 2vw;
+}
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-intro {
+  font-size: large;
+}
+.Location-Title{
+  width: 150px;
+  font-size: 1.25em;
+  font-weight: bold;
+}
+
+.unClicked{
+  color: green;
+}
+.clicked{
+  color: red;
+}
+.close{
+  border: 0px;
+  background-color: white;
+  opacity: 100%;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
