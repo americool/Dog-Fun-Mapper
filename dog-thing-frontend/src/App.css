@@ -28,11 +28,18 @@
   font-size: 1.25em;
   font-weight: bold;
 }
-
+button{
+  border: 0px;
+  background-color: #222;
+  font-size: 1em;
+  outline: none;
+}
 .unClicked{
+
   color: green;
 }
 .clicked{
+
   color: red;
 }
 .close{

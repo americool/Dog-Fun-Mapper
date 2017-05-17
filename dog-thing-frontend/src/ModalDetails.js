@@ -23,8 +23,8 @@ class ModalDetails extends Component {
     return (
       comments.map((comment, index) => (
         <div>
-          <span className="UserName"> {users[comment.user_id]} </span>
-          <span> : {comment.body} </span>
+          <span className="UserName">{users[comment.user_id]}</span>
+          <span>: {comment.body} </span>
           <br/><br/>
         </div>
       ))

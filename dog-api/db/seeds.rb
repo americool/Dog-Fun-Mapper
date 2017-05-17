@@ -36,4 +36,4 @@ locations = Location.all
   )
 end
 
-puts "Done: #{Location.count} locations and #{Comment.count} comments."
+puts "Done: #{User.count} users, #{Location.count} locations, and #{Comment.count} comments."
