@@ -9,7 +9,9 @@ class LocationsController < ApplicationController
   end
 
   # GET /locations/1
+  #shows comments from location 
   def show
+    render json: @location.comments
   end
 
   # GET /locations/new

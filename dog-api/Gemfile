@@ -6,7 +6,7 @@ gem 'rails', '~> 5.0.2'
 gem 'spring', :group => :development
 
 gem 'listen', :group => :development
-
+gem 'bcrypt'
 gem 'pg'
 gem 'rack-cors'
 gem 'faker', '~> 1.6.3'

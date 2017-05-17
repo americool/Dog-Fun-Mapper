@@ -16,3 +16,14 @@
     verified: Faker::Boolean.boolean
   )
 end
+
+locations = Location.all
+
+200.times do
+  Comment.create(
+    location: locations.sample,
+    body: Faker::Hipster.paragraph
+  )
+end
+
+puts "Done: #{Location.count} locations and #{Comment.count} comments."

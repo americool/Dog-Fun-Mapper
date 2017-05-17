@@ -5,7 +5,6 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import filter from 'lodash/filter';
-import logo from './logo.svg';
 import ModalStyle from './ModalStyle.css';
 import ModalDetails from './ModalDetails';
 import Location from './Location';
@@ -16,6 +15,7 @@ const API_KEY = process.env.GOOGLE_MAP_KEY
 const appElement = document.getElementById('root');
 
 const potentialFilters = ["Pet-Store", "Groomer", "Natural-Park", "Offleash Dog Area", "Dog-Friendly Business", "Dog-Friendly-Water"]
+
 class App extends Component {
   constructor() {
     super();
@@ -70,7 +70,7 @@ class App extends Component {
   }
 
   dataRender = () => {
-    const {data, filters} = this.state
+    const {filters} = this.state
     const filteredData = this.filterData(filters);
     // console.log(data)
     // console.log(filteredData)
@@ -90,7 +90,7 @@ class App extends Component {
     const {toggles} = this.state
     return (
       potentialFilters.map((filter, index) => (
-        <Button className= {toggles[index]? "clicked" : "unClicked"} bsSize={"xsmall"} onClick={() =>  this.buttonFilter(filter, index)}> {filter} </Button>
+        <Button className={toggles[index]? "clicked" : "unClicked"} bsSize="large" onClick={() =>  this.buttonFilter(filter, index)}> {filter} </Button>
       ))
     )
   }
@@ -120,8 +120,8 @@ class App extends Component {
            style={ModalStyle}
            contentLabel="Example Modal"
         >
-          <Button className="close" bsSize="small" bsStyle="danger" onClick= {() => this.closeModal()}> X </Button>
-         <ModalDetails modalData = {this.state.tempProps}/>
+          <Button className="close" bsSize="small" bsStyle="danger" onClick={() => this.closeModal()}> X </Button>
+         <ModalDetails modalData={this.state.tempProps}/>
         </Modal>
 
         <div className="App-header">
