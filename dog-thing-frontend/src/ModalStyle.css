@@ -2,6 +2,20 @@ p {
   text-align: center;
 }
 
+.details {
+  overflow: hidden;
+}
+.UserName {
+  font-weight: bold;
+  color: blue;
+}
+
+.Scrollable{
+  height: 35vh;
+  border: 1px solid;
+  overflow: scroll;
+  padding: 10px;
+}
 .Title {
   font-weight: bold;
 }

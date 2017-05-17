@@ -7,6 +7,7 @@ class ModalDetails extends Component {
     super();
     this.state = {
       comments: [],
+      users: {},
     }
   }
   componentDidMount(){
@@ -14,29 +15,37 @@ class ModalDetails extends Component {
 
     axios.get('http://localhost:4000/locations/' + id).then((res) => {
       console.log(res.data)
-      this.setState({comments: res.data})
+      this.setState({comments: res.data.comments, users: res.data.users})
     })
   }
   renderComments = () =>{
-    const {comments} = this.state;
+    const {comments, users} = this.state;
     return (
       comments.map((comment, index) => (
-        <p> {index+1}): {comment.body} </p>
+        <div>
+          <span className="UserName"> {users[comment.user_id]} </span>
+          <span> : {comment.body} </span>
+          <br/><br/>
+        </div>
       ))
     )
   }
   render () {
 
     // console.log(this.props.modalData)
-    const {title, lat, lng, category, address, verified} = this.props.modalData.data
+    const {title, category, address, verified} = this.props.modalData.data
     return (
       <div>
-        <p className = "Title"> {title} </p><br/>
-        <p className = "Category"> {category} </p><br/>
-        <p className = "Address"> {address} </p><br/>
-        <p className = "Verified"> Verified: {verified.toString()} </p><br/>
-        <h3>Comments:</h3>
-        {this.renderComments()}
+        <div className="details">
+          <p className="Title"> {title} </p><br/>
+          <p className="Category"> {category} </p><br/>
+          <p className="Address"> {address} </p><br/>
+          <p className="Verified"> Verified: {verified.toString()} </p><br/>
+          <h3>Comments:</h3>
+        </div>
+        <div className="Scrollable">
+          {this.renderComments()}
+        </div>
       </div>
     )
   }

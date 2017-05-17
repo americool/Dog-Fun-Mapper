@@ -9,9 +9,18 @@ class LocationsController < ApplicationController
   end
 
   # GET /locations/1
-  #shows comments from location 
+  #shows comments from location
   def show
-    render json: @location.comments
+    @user_list = Hash.new
+    @location.comments.each do |comment|
+      id = comment.user_id
+      name = comment.user.name
+      @user_list[id] = name
+    end
+      render :json => {
+        :comments => @location.comments,
+        :users => @user_list
+      }
   end
 
   # GET /locations/new
