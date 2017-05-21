@@ -125,7 +125,7 @@ class App extends Component {
         </Modal>
 
         <div className="App-header">
-          <h2>Dog Fun Mapper!</h2>
+          <h2>THE DOGGO CARTOGRAPHER!</h2>
           <h3>Filter Data: </h3>
           {this.renderButtons()}
 

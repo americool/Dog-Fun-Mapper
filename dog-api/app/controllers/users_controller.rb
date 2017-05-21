@@ -8,6 +8,10 @@ class UsersController < ApplicationController
     render json: @users
   end
 
+  def new
+    @user = User.new
+  end
+
   # GET /users/1
   def show
     render json: @user
