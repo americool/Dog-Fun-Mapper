@@ -6,24 +6,22 @@ class ModalDetails extends Component {
   constructor(){
     super();
     this.state = {
-      comments: [],
-      users: {},
+      comments: []
     }
   }
   componentDidMount(){
     const {id} = this.props.modalData.data;
 
     axios.get('http://localhost:4000/locations/' + id).then((res) => {
-      console.log(res.data)
-      this.setState({comments: res.data.comments, users: res.data.users})
+      this.setState({comments: res.data})
     })
   }
   renderComments = () =>{
-    const {comments, users} = this.state;
-    return (
-      comments.map((comment, index) => (
+    const {comments} = this.state;
+     return (
+      comments.map((comment) => (
         <div>
-          <span className="UserName">{users[comment.user_id]}</span>
+          <span className="UserName">{comment.username}</span>
           <span>: {comment.body} </span>
           <br/><br/>
         </div>

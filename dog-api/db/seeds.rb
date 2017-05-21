@@ -29,8 +29,10 @@ end
 locations = Location.all
 
 200.times do
+  user = users.sample
   Comment.create(
-    user: users.sample,
+    user: user,
+    username: user.name,
     location: locations.sample,
     body: Faker::Hipster.paragraph
   )
