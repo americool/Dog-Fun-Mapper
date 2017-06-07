@@ -10,6 +10,8 @@ gem 'bcrypt'
 gem 'pg'
 gem 'rack-cors'
 gem 'faker', '~> 1.6.3'
+gem 'jwt'
+gem 'figaro'
 
 
 

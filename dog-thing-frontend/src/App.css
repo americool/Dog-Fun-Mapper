@@ -1,9 +1,7 @@
-.App {
-  text-align: center;
-}
+
 #map {
   width: 100vw;
-  height: 76vh;
+  height: 76.5vh;
 }
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
@@ -15,8 +13,9 @@
 }
 .App-header {
   background-color: #222;
-  height: 150px;
-  padding: 20px;
+  height: 10vh;
+  padding-top: 10px;
+  text-align: center;
   color: white;
 }
 
@@ -27,7 +26,32 @@
   width: 150px;
   font-size: 1.25em;
   font-weight: bold;
+  text-align: center;
 }
+.Filter-Buttons{
+  text-align: center;
+  height: auto;
+  padding: .5vh;
+  background-color: #222;
+  color: white;
+}
+
+.Signin-Link{
+  position: absolute;
+  right: .75vw;
+  bottom:94vh;
+  color: white;
+  font-size: 1em;
+}
+
+.Signup-Link{
+  position: absolute;
+  right: .75vw;
+  bottom:90vh;
+  color: white;
+  font-size: 1em;
+}
+
 button{
   border: 0px;
   background-color: #222;
