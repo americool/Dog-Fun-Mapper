@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router'
+// import { reactLocalStorage } from 'reactjs-localstorage';
 import axios from 'axios';
 
 class Signin extends Component {
@@ -30,13 +31,12 @@ class Signin extends Component {
         password: password,
       }
     }).then((res) => {
-      alert('Worked');
-      console.log(res.data.jwt)
-      this.getUserInfo(res.data.jwt)
-      // this.setState({redirect:true})
+      alert('Signed In!');
+      localStorage.setItem('jwt', res.data.jwt);
+      this.getUserInfo(res.data.jwt);
     }).catch((error) => {
       console.log(error)
-      alert("didn't");
+      alert("Don't Have That Email/Password Combo Cuz...");
     });
   }
 
@@ -44,13 +44,14 @@ class Signin extends Component {
     axios.post('http://localhost:4000/users/get_user', {
       payload: jwt
     }).then((res) => {
-      alert('YAY');
-      console.log(res);
+      localStorage.setItem('userName', res.data.name);
+      localStorage.setItem('userID', res.data.id)
+      this.setState({redirect:true});
     }).catch((error)=> {
       console.log(error)
-      alert("nope");
     })
   }
+
   // makeErrorString(obj) {
   //   let errorString = "Could not create User for the following reasons: \n";
   //   for (var key in obj) {

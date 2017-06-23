@@ -13,7 +13,7 @@
 }
 .App-header {
   background-color: #222;
-  height: 10vh;
+  height: 9vh;
   padding-top: 10px;
   text-align: center;
   color: white;
@@ -36,7 +36,7 @@
   color: white;
 }
 
-.Signin-Link{
+.Signout-Link{
   position: absolute;
   right: .75vw;
   bottom:94vh;
@@ -45,6 +45,14 @@
 }
 
 .Signup-Link{
+  position: absolute;
+  right: .75vw;
+  bottom:94vh;
+  color: white;
+  font-size: 1em;
+}
+
+.Signin-Link{
   position: absolute;
   right: .75vw;
   bottom:90vh;

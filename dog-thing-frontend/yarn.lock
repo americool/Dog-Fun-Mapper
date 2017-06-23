@@ -4313,6 +4313,10 @@ react@^15.5.4:
     object-assign "^4.1.0"
     prop-types "^15.5.7"
 
+reactjs-localstorage@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/reactjs-localstorage/-/reactjs-localstorage-0.0.5.tgz#a290e1949c2c4a61ec7f1f5ff4c8b8e95c0e6735"
+
 read-pkg-up@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/read-pkg-up/-/read-pkg-up-1.0.1.tgz#9d63c13276c065918d57f002a57f40a1b643fb02"

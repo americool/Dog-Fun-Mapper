@@ -6,16 +6,50 @@ class ModalDetails extends Component {
   constructor(){
     super();
     this.state = {
-      comments: []
+      locationID: null,
+      userName: localStorage.getItem('userName'),
+      userID: localStorage.getItem('userID'),
+      comments: [],
+      newComment: "",
     }
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidMount(){
     const {id} = this.props.modalData.data;
 
     axios.get('http://localhost:4000/locations/' + id).then((res) => {
-      this.setState({comments: res.data})
+      this.setState({comments: res.data, locationID: id})
     })
   }
+
+  handleChange(key) {
+    return function (e) {
+      let state = {};
+      state[key] = e.target.value;
+      this.setState(state);
+    }.bind(this);
+  }
+
+  handleSubmit(event) {
+    const { userName, userID, newComment, locationID } = this.state;
+    axios.post('http://localhost:4000/comments', {
+      comment: {
+        body: newComment,
+        location_id: locationID,
+        user_id: userID,
+        username: userName
+      }
+    }).then((res) => {
+      alert('Success! New comment!');
+      console.log(res)
+      // this.setState({redirect:true})
+    }).catch((error) => {
+      alert('Comment Failed!');
+      console.log(error);
+    });
+  }
+
+
   renderComments = () =>{
     const {comments} = this.state;
      return (
@@ -27,6 +61,20 @@ class ModalDetails extends Component {
         </div>
       ))
     )
+  }
+
+
+  renderAddComment = () => {
+    if (this.state.userName !== "null") {
+      return (
+        <form onSubmit={this.handleSubmit}>
+          <label> Add a Comment:
+          <textarea value={this.state.newComment} onChange={this.handleChange('newComment')}/>
+          </label>
+          <input type="submit" value="Submit" />
+        </form>
+      )
+    }
   }
   render () {
 
@@ -41,6 +89,7 @@ class ModalDetails extends Component {
           <p className="Verified"> Verified: {verified.toString()} </p><br/>
           <h3>Comments:</h3>
         </div>
+          {this.renderAddComment()}
         <div className="Scrollable">
           {this.renderComments()}
         </div>

@@ -7,6 +7,7 @@ import filter from 'lodash/filter';
 import ModalStyle from './ModalStyle.css';
 import ModalDetails from './ModalDetails';
 import Location from './Location';
+import Login from './Login';
 import './App.css';
 
 const API_KEY = process.env.GOOGLE_MAP_KEY
@@ -123,7 +124,7 @@ class MapView extends Component {
           <Button className="close" bsSize="small" bsStyle="danger" onClick={() => this.closeModal()}> X </Button>
          <ModalDetails modalData={this.state.tempProps}/>
         </Modal>
-
+        <Login />
         <div className="Filter-Buttons">
           <h3> Filter Locations: </h3>
           {this.renderButtons()}

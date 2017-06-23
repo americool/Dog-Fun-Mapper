@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   post 'user_token' => 'user_token#create'
-  resources :locations
+  resources :locations do
+    get :show_comments
+  end
   resources :comments
   resources :users
 

@@ -25,6 +25,10 @@ class LocationsController < ApplicationController
       render json: @location.comments
   end
 
+  # def show_comments
+  #   @location = Location.find(params[:location_id])
+  #   render json: @location.comments
+  # end
   # GET /locations/new
   def new
     @location = Location.new
