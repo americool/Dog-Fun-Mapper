@@ -52,6 +52,10 @@ GEM
       activesupport (>= 4.2.0)
     i18n (0.8.1)
     jwt (1.5.6)
+    knock (2.1.1)
+      bcrypt (~> 3.1)
+      jwt (~> 1.5)
+      rails (>= 4.2)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -128,6 +132,7 @@ DEPENDENCIES
   faker (~> 1.6.3)
   figaro
   jwt
+  knock
   listen
   pg
   puma

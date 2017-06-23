@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
 
+  before_action :set_user, only: [:show, :update, :destroy]
   # GET /users
   def index
     @users = User.all
@@ -15,6 +15,13 @@ class UsersController < ApplicationController
   # GET /users/1
   def show
     render json: @user
+  end
+
+  def get_user
+    payload = params[:payload]
+    decoded_token = JWT.decode payload, Rails.application.secrets.secret_key_base, true, { :algorithm => 'HS256' }
+    current_user = User.find((decoded_token[0])['sub'])
+    render json: current_user
   end
 
   # POST /users

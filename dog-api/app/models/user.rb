@@ -2,6 +2,11 @@ class User < ApplicationRecord
   has_many :locations
   has_many :comments
 
+
+  def self.from_token_payload(payload)
+    self.find payload["sub"]
+  end
+
   before_save { self.email = email.downcase if email.present? }
 
   EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i

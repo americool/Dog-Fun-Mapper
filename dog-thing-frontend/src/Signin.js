@@ -6,7 +6,7 @@ class Signin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: '',
+      email: '',
       password:'',
       redirect: false,
   };
@@ -23,23 +23,34 @@ class Signin extends Component {
   }
 
   handleSubmit(event) {
-    const {userName, email, password, passwordConfirmation} = this.state;
-    axios.post('http://localhost:4000/users', {
-      user: {
-        name: userName,
+    const { email, password } = this.state;
+    axios.post('http://localhost:4000/user_token', {
+      auth: {
         email: email,
         password: password,
-        password_confirmation: passwordConfirmation
       }
     }).then((res) => {
-      alert('Success! New Account Created!');
-      this.setState({redirect:true})
+      alert('Worked');
+      console.log(res.data.jwt)
+      this.getUserInfo(res.data.jwt)
+      // this.setState({redirect:true})
     }).catch((error) => {
-      const errorString = this.makeErrorString(error.response.data)
-      alert(errorString);
+      console.log(error)
+      alert("didn't");
     });
   }
 
+  getUserInfo(jwt){
+    axios.post('http://localhost:4000/users/get_user', {
+      payload: jwt
+    }).then((res) => {
+      alert('YAY');
+      console.log(res);
+    }).catch((error)=> {
+      console.log(error)
+      alert("nope");
+    })
+  }
   // makeErrorString(obj) {
   //   let errorString = "Could not create User for the following reasons: \n";
   //   for (var key in obj) {
@@ -58,8 +69,8 @@ class Signin extends Component {
       <div>
         <p> YO! </p>
         <form onSubmit={this.handleSubmit}>
-          <label> UserName:
-          <input type="text" value={this.state.userName} onChange={this.handleChange('userName')} />
+          <label> Email:
+          <input type="text" value={this.state.email} onChange={this.handleChange('email')} />
           </label><br/>
           <label> Password:
           <input type="text" value={this.state.password} onChange={this.handleChange('password')}/>

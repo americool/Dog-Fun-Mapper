@@ -12,6 +12,7 @@ gem 'rack-cors'
 gem 'faker', '~> 1.6.3'
 gem 'jwt'
 gem 'figaro'
+gem 'knock'
 
 
 
