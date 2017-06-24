@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
+
+
 class ModalDetails extends Component {
   constructor(){
     super();
@@ -16,9 +18,13 @@ class ModalDetails extends Component {
   }
   componentDidMount(){
     const {id} = this.props.modalData.data;
+    this.setState({locationID: id})
+    this.getComments(id);
+  }
 
-    axios.get('http://localhost:4000/locations/' + id).then((res) => {
-      this.setState({comments: res.data, locationID: id})
+  getComments(id){
+    axios.get('http://localhost:4000/locations/' + id + '/show_comments').then((res) => {
+      this.setState({comments: res.data.reverse()})
     })
   }
 
@@ -40,9 +46,9 @@ class ModalDetails extends Component {
         username: userName
       }
     }).then((res) => {
-      alert('Success! New comment!');
-      console.log(res)
-      // this.setState({redirect:true})
+      this.setState({ newComment:"" });
+      console.log(res);
+      this.getComments(locationID);
     }).catch((error) => {
       alert('Comment Failed!');
       console.log(error);
