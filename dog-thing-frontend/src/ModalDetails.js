@@ -107,7 +107,8 @@ ModalDetails.propTypes = {
   text: PropTypes.string,
   category: PropTypes.string,
   address: PropTypes.string,
-  verified: PropTypes.bool
+  verified: PropTypes.bool,
+  modalData: PropTypes.object,
 
 }
 export default ModalDetails;
