@@ -6,6 +6,7 @@ import { Button } from 'react-bootstrap';
 import filter from 'lodash/filter';
 import ModalStyle from './ModalStyle.css';
 import ModalDetails from './ModalDetails';
+import AddLocation from './AddLocation';
 import Location from './Location';
 import Login from './Login';
 import './App.css';
@@ -22,7 +23,9 @@ class MapView extends Component {
       modalIsOpen: false,
       tempProps: {},
       filters: [],
-      toggles: [false,false,false,false,false,false]
+      toggles: [false,false,false,false,false,false],
+      addNew: false,
+      userName: null,
     }
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -31,19 +34,23 @@ class MapView extends Component {
   }
 
   componentDidMount(){
+    this.setState({userName: localStorage.getItem('userName')})
+    this.getData();
+  }
+  getData(){
     axios.get('http://localhost:4000/locations').then((res) => {
       this.setState({data: res.data, isLoading: false})
     })
-    console.log(API_KEY)
   }
-
   static defaultProps = {
     center: {lat: 40.447044, lng: -80.013936},
     zoom: 5
   };
-
+  markLoggedOut() {
+    this.setState({userName:false})
+  }
   openModal() {
-   this.setState({modalIsOpen: true});
+   this.setState({modalIsOpen: true})
  }
 
  afterOpenModal() {
@@ -52,14 +59,34 @@ class MapView extends Component {
  }
 
  closeModal() {
-   this.setState({modalIsOpen: false});
+  this.setState({modalIsOpen: false})
  }
 
  onChildClick = (key, childProps) => {
     this.setState({tempProps: childProps});
     this.openModal();
   }
-
+  onMapClick = ({lat, lng, event}) => {
+    event.preventDefault();
+    if (this.state.addNew){
+      console.log(lat, lng)
+      this.setState({tempProps: {lat, lng}});
+      this.openModal();
+    }
+  }
+  locationAdded() {
+    this.closeModal();
+    this.setState({addNew: false});
+    this.getData();
+  }
+  conditionalModalData = () => {
+    if (this.state.addNew) {
+      return <AddLocation modalData={this.state.tempProps} submitted={this.locationAdded.bind(this)} />
+    }
+    else {
+      return <ModalDetails modalData={this.state.tempProps}/>
+    }
+  }
   filterData(filters) {
     const {data} = this.state;
     let newData = filter(data, function(location){
@@ -86,14 +113,40 @@ class MapView extends Component {
       ))
     )
   }
-
+  renderAddButton = () => {
+    if (!this.state.addNew) {
+      if (this.state.userName){
+        return(
+          <Button className="addButton" onClick={() => this.setState({addNew:true})}> ADD NEW? </Button>
+        )
+      }
+      else {
+        return (
+          <strong>LOG IN TO ADD YOUR OWN DOGGO LOCATIONS</strong>
+        )
+      }
+    }
+    else {
+      return(
+        <Button className="addButton" onClick={() => this.setState({addNew:false})}> CANCEL? </Button>
+      )
+    }
+  }
   renderButtons = () => {
-    const {toggles} = this.state
-    return (
-      potentialFilters.map((filter, index) => (
-        <Button className={toggles[index]? "clicked" : "unClicked"} bsSize="large" onClick={() =>  this.buttonFilter(filter, index)}> {filter} </Button>
-      ))
-    )
+    if (!this.state.addNew){
+      const {toggles} = this.state
+      return (
+
+        potentialFilters.map((filter, index) => (
+          <Button key={index} className={toggles[index]? "clicked" : "unClicked"} bsSize="large" onClick={() =>  this.buttonFilter(filter, index)}> {filter} </Button>
+        ))
+      )
+    }
+    else {
+      return (
+        <p> Click on the map to Add your Doggo Location! </p>
+      )
+    }
   }
   buttonFilter(category, ref) {
     let {toggles} = this.state
@@ -122,12 +175,18 @@ class MapView extends Component {
            contentLabel="Example Modal"
         >
           <Button className="close" bsSize="small" bsStyle="danger" onClick={() => this.closeModal()}> X </Button>
-         <ModalDetails modalData={this.state.tempProps}/>
+          {this.conditionalModalData()}
         </Modal>
-        <Login />
+
+
+        <Login logOut={this.markLoggedOut.bind(this)}/>
+
         <div className="Filter-Buttons">
           <h3> Filter Locations: </h3>
+          <hr/>
           {this.renderButtons()}
+          <hr/>
+          {this.renderAddButton()}
         </div>
 
         <div id="map">
@@ -138,6 +197,7 @@ class MapView extends Component {
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
           onChildClick={this.onChildClick}
+          onClick={this.onMapClick}
           >
           {this.dataRender()}
           </GoogleMapReact>

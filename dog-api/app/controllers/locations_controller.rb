@@ -33,9 +33,9 @@ class LocationsController < ApplicationController
     @location = Location.new(location_params)
 
     if @location.save
-      redirect_to @location, notice: 'Location was successfully created.'
+      render json: @location, status: :created, location: @location
     else
-      render :new
+      render json: @location.errors, status: :unprocessable_entity
     end
   end
 
@@ -62,6 +62,6 @@ class LocationsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def location_params
-      params.require(:location).permit(:title, :type, :address, :lat, :lng, :verified)
+      params.require(:location).permit(:title, :category, :address, :lat, :lng, :verified, :user_id)
     end
 end

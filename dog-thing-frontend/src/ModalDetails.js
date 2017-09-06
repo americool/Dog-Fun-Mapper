@@ -37,6 +37,7 @@ class ModalDetails extends Component {
   }
 
   handleSubmit(event) {
+    event.preventDefault()
     const { userName, userID, newComment, locationID } = this.state;
     axios.post('http://localhost:4000/comments', {
       comment: {
@@ -60,7 +61,7 @@ class ModalDetails extends Component {
     const {comments} = this.state;
      return (
       comments.map((comment) => (
-        <div>
+        <div key={comment.id}>
           <span className="UserName">{comment.username}</span>
           <span>: {comment.body} </span>
           <br/><br/>

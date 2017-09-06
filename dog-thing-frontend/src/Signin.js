@@ -24,6 +24,7 @@ class Signin extends Component {
   }
 
   handleSubmit(event) {
+    event.preventDefault();
     const { email, password } = this.state;
     axios.post('http://localhost:4000/user_token', {
       auth: {

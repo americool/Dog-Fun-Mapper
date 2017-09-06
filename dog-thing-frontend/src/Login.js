@@ -14,10 +14,11 @@ class Login extends Component {
   }
 
   logOut(){
-    this.setState({jwt: null, userName: "null"});
-    localStorage.setItem('jwt', null);
-    localStorage.setItem('userName', null);
-    localStorage.setItem('userID', null);
+    this.setState({jwt: null, userName: null});
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userID');
+    this.props.logOut();
   }
 
   render(){
@@ -37,7 +38,7 @@ class Login extends Component {
 
     return(
       <div>
-        { this.state.userName !== "null" ? userLoggedIn : userNotLoggedIn }
+        { this.state.userName ? userLoggedIn : userNotLoggedIn }
       </div>
     )
   }

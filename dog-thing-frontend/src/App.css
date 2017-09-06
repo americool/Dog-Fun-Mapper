@@ -1,7 +1,7 @@
 
 #map {
   width: 100vw;
-  height: 76.5vh;
+  height: 76vh;
 }
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
@@ -28,6 +28,7 @@
   font-weight: bold;
   text-align: center;
 }
+
 .Filter-Buttons{
   text-align: center;
   height: auto;
@@ -67,12 +68,13 @@ button{
   outline: none;
 }
 .unClicked{
-
   color: green;
 }
 .clicked{
-
   color: red;
+}
+.addButton{
+  color: white;
 }
 .close{
   border: 0px;
