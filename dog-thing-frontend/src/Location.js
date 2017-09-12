@@ -1,14 +1,14 @@
 import React, { PropTypes, Component } from 'react';
-import paw from './paw.png';
+
 
 
 class Location extends Component {
-  static propTypes = {
-  // GoogleMap pass $hover props to hovered components
-  // to detect hover it uses internal mechanism, explained in x_distance_hover example
-  $hover: PropTypes.bool,
-  data: PropTypes.object.isRequired,
-  };
+  // static propTypes = {
+  // // GoogleMap pass $hover props to hovered components
+  // // to detect hover it uses internal mechanism, explained in x_distance_hover example
+  // $hover: PropTypes.bool,
+  // data: PropTypes.object.isRequired,
+  // };
   static defaultProps = {};
 
   onHover() {
@@ -24,7 +24,7 @@ class Location extends Component {
   render() {
     return (
       <div>
-        <img src={paw} className="Icon" alt="NO-IMAGE" />
+        <img src={this.props.img} className="Icon" alt="NO-IMAGE" />
         {this.onHover()}
       </div>
     )

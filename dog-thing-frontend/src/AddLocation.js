@@ -8,16 +8,15 @@ class AddLocation extends Component {
     super();
     this.state = {
       name:'',
-      category:'',
+      category:null,
       address:''
     }
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  // componentDidMount() {
-  //   this.setState({lat:this.props.modalData.lat});
-  //   this.setState({lng:this.props.modalData.lng});
-  // }
+  componentDidMount() {
+    this.setState({address:this.props.modalData.address});
+  }
   handleChange(key) {
     return function (e) {
       let state = {};
@@ -27,26 +26,31 @@ class AddLocation extends Component {
   }
   handleSubmit(event) {
     event.preventDefault()
-    console.log(this.state);
-    console.log("SUBMITTED");
-    axios.post('http://localhost:4000/locations/', {
-      location: {
-        title: this.state.name,
-        category: this.state.category,
-        address: this.state.address,
-        lat: this.props.modalData.lat,
-        lng: this.props.modalData.lng,
-        verified: false,
-        user_id: parseInt(localStorage.getItem('userID'), 10)
-      }
-    }).then((res) => {
-      alert("Added!");
-      console.log(res)
-      this.props.submitted();
-    }).catch((error) => {
-      console.log(error)
-      alert(error)
-    })
+    if (!this.state.category || this.state.name===''){
+      alert("Please Pick a Category and Name!")
+    }
+    else {
+      console.log(this.state);
+      console.log("SUBMITTED");
+      axios.post('http://localhost:4000/locations/', {
+        location: {
+          title: this.state.name,
+          category: this.state.category,
+          address: this.state.address,
+          lat: this.props.modalData.lat,
+          lng: this.props.modalData.lng,
+          verified: false,
+          user_id: parseInt(localStorage.getItem('userID'), 10)
+        }
+      }).then((res) => {
+        alert("Added!");
+        console.log(res)
+        this.props.submitted();
+      }).catch((error) => {
+        console.log(error)
+        alert(error)
+      })
+    }
   }
 
   setCategory(event) {

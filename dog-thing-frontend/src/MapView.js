@@ -9,6 +9,8 @@ import ModalDetails from './ModalDetails';
 import AddLocation from './AddLocation';
 import Location from './Location';
 import Login from './Login';
+import paw from './paw.png';
+import question from './qmark.png';
 import './App.css';
 
 const API_KEY = process.env.GOOGLE_MAP_KEY
@@ -26,26 +28,46 @@ class MapView extends Component {
       toggles: [false,false,false,false,false,false],
       addNew: false,
       userName: null,
+      center: {lat: 40.447044, lng: -80.013936},
+      zoom: 0,
+      searchLocation:'',
+      tempPin: false,
     }
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.buttonFilter = this.buttonFilter.bind(this);
+    this.centerMap = this.centerMap.bind(this);
+    this.addByAddress = this.addByAddress.bind(this);
   }
-
+  // static propTypes = {
+  //   onCenterChange: PropTypes.func,
+  //   onZoomChange: PropTypes.func,
+  // }
   componentDidMount(){
     this.setState({userName: localStorage.getItem('userName')})
     this.getData();
   }
+
+  // static defaultProps = {
+  //   center: {lat: 40.447044, lng: -80.013936},
+  //   zoom: 5,
+  // };
+
+  handleChange(key) {
+    return function (e) {
+      let state = {};
+      state[key] = e.target.value;
+      this.setState(state);
+    }.bind(this);
+  }
+
   getData(){
     axios.get('http://localhost:4000/locations').then((res) => {
-      this.setState({data: res.data, isLoading: false})
+      this.setState({data: res.data, tempPin: false})
     })
   }
-  static defaultProps = {
-    center: {lat: 40.447044, lng: -80.013936},
-    zoom: 5
-  };
+
   markLoggedOut() {
     this.setState({userName:false})
   }
@@ -63,15 +85,23 @@ class MapView extends Component {
  }
 
  onChildClick = (key, childProps) => {
-    this.setState({tempProps: childProps});
-    this.openModal();
+   if(!this.state.addNew){
+     this.setState({tempProps: childProps});
+     this.openModal();
+    }
   }
   onMapClick = ({lat, lng, event}) => {
     event.preventDefault();
     if (this.state.addNew){
-      console.log(lat, lng)
-      this.setState({tempProps: {lat, lng}});
-      this.openModal();
+      axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' +lat+','+lng+'&key='+API_KEY).then((res) => {
+        const address = res.data.results[0].formatted_address;
+        console.log(address)
+        console.log(lat, lng)
+        this.setState({tempProps: {lat, lng, address}});
+        this.openModal();
+      }).catch((error) => {
+        console.log(error);
+      })
     }
   }
   locationAdded() {
@@ -109,9 +139,55 @@ class MapView extends Component {
            lng={location.lng}
            data={location}
            key={location.id}
+           img={paw}
           />
       ))
     )
+  }
+
+  centerMap(event) {
+    event.preventDefault();
+    axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + this.state.searchLocation+'&key='+API_KEY).then((res) => {
+      const center = res.data.results[0].geometry.location
+      console.log(center)
+      this.setState({center, zoom:17})
+      if(this.state.addNew){
+        this.addByAddress();
+      }
+    }).catch((err) => {
+      console.log(err)
+      alert("Couldn't Find it");
+    })
+  }
+
+  tempPin = () => {
+    if (this.state.tempPin){
+      return(
+        <Location lat={this.state.center.lat} lng={this.state.center.lng} key={"temp"} img={question}/>
+      )
+    }
+  }
+  addByAddress(event) {
+
+    //Drops temporary Pin? Currently won't rerender map
+    this.setState({tempPin:true});
+    const confirming = () => {
+      if(confirm("Is this the right spot?")){
+        this.setState({tempProps: {lat: this.state.center.lat, lng: this.state.center.lng, address: this.state.searchLocation}})
+        this.openModal();
+      }
+    }
+    setTimeout(confirming, 500)
+  }
+  searchForm() {
+      return(
+        <div>
+          <form onSubmit={this.centerMap}>
+            <input type="text" value={this.state.searchLocation} onChange={this.handleChange('searchLocation')} />
+            <input type="submit" value="Submit" />
+          </form>
+        </div>
+      )
   }
   renderAddButton = () => {
     if (!this.state.addNew) {
@@ -128,25 +204,20 @@ class MapView extends Component {
     }
     else {
       return(
-        <Button className="addButton" onClick={() => this.setState({addNew:false})}> CANCEL? </Button>
+        <Button className="addButton" onClick={() => this.setState({addNew:false, tempPin:false})}> CANCEL? </Button>
       )
     }
   }
   renderButtons = () => {
-    if (!this.state.addNew){
       const {toggles} = this.state
       return (
-
-        potentialFilters.map((filter, index) => (
-          <Button key={index} className={toggles[index]? "clicked" : "unClicked"} bsSize="large" onClick={() =>  this.buttonFilter(filter, index)}> {filter} </Button>
-        ))
+        <div>
+          <h3> Filter Locations: </h3>
+          {potentialFilters.map((filter, index) => (
+            <Button key={index} className={toggles[index]? "clicked" : "unClicked"} bsSize="large" onClick={() =>  this.buttonFilter(filter, index)}> {filter} </Button>
+          ))}
+        </div>
       )
-    }
-    else {
-      return (
-        <p> Click on the map to Add your Doggo Location! </p>
-      )
-    }
   }
   buttonFilter(category, ref) {
     let {toggles} = this.state
@@ -178,15 +249,17 @@ class MapView extends Component {
           {this.conditionalModalData()}
         </Modal>
 
+        <div className="notTheMap">
+          <Login logOut={this.markLoggedOut.bind(this)}/>
 
-        <Login logOut={this.markLoggedOut.bind(this)}/>
-
-        <div className="Filter-Buttons">
-          <h3> Filter Locations: </h3>
-          <hr/>
-          {this.renderButtons()}
-          <hr/>
-          {this.renderAddButton()}
+          <div className="Filter-Buttons">
+            <hr/>
+            {this.state.addNew ? "Click on the map to Add your Doggo Location!" : this.renderButtons()}
+            <hr/>
+            {this.state.addNew ? "Or Search a Location" : "Center Map on Address"}
+            {this.searchForm()}
+            {this.renderAddButton()}
+          </div>
         </div>
 
         <div id="map">
@@ -194,12 +267,15 @@ class MapView extends Component {
           bootstrapURLKeys={{
             key: API_KEY
           }}
-          defaultCenter={this.props.center}
-          defaultZoom={this.props.zoom}
+          center={this.state.center}
+          defaultZoom={5}
+          zoom={this.state.zoom}
           onChildClick={this.onChildClick}
           onClick={this.onMapClick}
+          onChange={this.onChange}
           >
           {this.dataRender()}
+          {this.tempPin()}
           </GoogleMapReact>
         </div>
       </div>

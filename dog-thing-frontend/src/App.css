@@ -1,38 +1,37 @@
 
 #map {
   width: 100vw;
-  height: 76vh;
+  height: 68vh;
 }
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
+
 .Icon {
   height: 2vh;
   width: 2vw;
 }
+.notTheMap {
+  position:static;
+  height: 25vh;
+  background-color: #222;
+}
 .App-header {
   background-color: #222;
-  height: 9vh;
-  padding-top: 10px;
+  height: 7vh;
+  padding-top: 1vh;
   text-align: center;
   color: white;
 }
 
-.App-intro {
-  font-size: large;
-}
 .Location-Title{
-  width: 150px;
-  font-size: 1.25em;
+  width: 10vw;
+  font-size: 2vh;
   font-weight: bold;
   text-align: center;
 }
 
 .Filter-Buttons{
+
   text-align: center;
-  height: auto;
-  padding: .5vh;
+  padding: .01vh;
   background-color: #222;
   color: white;
 }
@@ -42,7 +41,7 @@
   right: .75vw;
   bottom:94vh;
   color: white;
-  font-size: 1em;
+  font-size: 2vh;
 }
 
 .Signup-Link{
@@ -50,21 +49,21 @@
   right: .75vw;
   bottom:94vh;
   color: white;
-  font-size: 1em;
+  font-size: 2vh;
 }
 
 .Signin-Link{
   position: absolute;
   right: .75vw;
-  bottom:90vh;
+  bottom:92vh;
   color: white;
-  font-size: 1em;
+  font-size: 2vh;
 }
 
 button{
   border: 0px;
   background-color: #222;
-  font-size: 1em;
+  font-size: 2vh;
   outline: none;
 }
 .unClicked{
@@ -81,7 +80,7 @@ button{
   background-color: white;
   opacity: 100%;
   font-weight: bold;
-  font-size: 1.5em;
+  font-size: 2vh;
 }
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
